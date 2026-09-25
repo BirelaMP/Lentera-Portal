@@ -55,8 +55,11 @@ export default function ArUcoDetector() {
     }
     
     setDetections((prev) => ({ ...prev, status: "connecting" }));
-    const websocket = new WebSocket(`ws://${ip}:8765`);
-    wsRef.current = websocket;
+    
+    try {
+      const websocket = new WebSocket(`ws://${ip}:8765`);
+      wsRef.current = websocket;
+
 
     websocket.onopen = () => setDetections((prev) => ({ ...prev, status: "connected" }));
     
@@ -91,8 +94,13 @@ export default function ArUcoDetector() {
     };
 
     websocket.onclose = () => {
+        setDetections((prev) => ({ ...prev, status: "disconnected" }));
+      };
+    } catch (err) {
+      console.error("WebSocket connection blocked:", err);
       setDetections((prev) => ({ ...prev, status: "disconnected" }));
-    };
+      showToast("Koneksi ditolak oleh browser. Gunakan localhost.");
+    }
   };
 
   useEffect(() => {
