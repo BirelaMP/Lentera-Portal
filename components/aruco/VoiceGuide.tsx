@@ -238,7 +238,7 @@ export default function VoiceGuide() {
     }
   }, [currentStep, mode]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const startGuide = (guideMode: "series" | "parallel") => {
+  const startGuide = (guideMode: "series" | "parallel" | "adaptive_series" | "adaptive_parallel") => {
     setMode(guideMode);
     setCurrentStep(0);
     setStepCompleted(false);
