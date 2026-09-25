@@ -83,7 +83,15 @@ export default function ArUcoDetector() {
 
         window.dispatchEvent(
           new CustomEvent("circuit-update", {
-            detail: { isBattery, isLamp, isSwitch, isComplete: complete, cells: data.cells },
+            detail: { 
+              isBattery, 
+              isLamp, 
+              isSwitch, 
+              isComplete: complete, 
+              cells: data.cells,
+              status: data.circuit_status?.status || "unknown",
+              graph_type: data.circuit_status?.graph_type || "unknown"
+            },
           })
         );
       }
