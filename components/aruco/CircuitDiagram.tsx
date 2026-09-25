@@ -82,7 +82,8 @@ export default function CircuitDiagram({ variant }: { variant?: string }) {
     const colIdx = cols.indexOf(cell[0]);
     const rowIdx = parseInt(cell[1]) - 1;
     // Jarak antar sel = 80, padding = 50
-    return { x: 50 + colIdx * 80, y: 50 + rowIdx * 80 };
+    // Balik Y-axis (4 - rowIdx) agar baris 1 berada di bawah (dekat siswa) dan baris 5 di atas
+    return { x: 50 + colIdx * 80, y: 50 + (4 - rowIdx) * 80 };
   };
 
   return (

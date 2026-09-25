@@ -16,9 +16,9 @@ type StepDef = {
 const SERIES_STEPS: StepDef[] = [
   {
     instruction: "Place the Battery at position C5",
-    voice: "Let's start building a series circuit! First, place the battery component at position C5, right in the center of the bottom row. The battery is the power source of our circuit.",
+    voice: "Let's start building a series circuit! First, place the battery component at position C5, right in the center of the top row. The battery is the power source of our circuit.",
     targetCells: { "C5": "battery" },
-    hint: "The battery has a plus and minus symbol. Place it in the center bottom.",
+    hint: "The battery has a plus and minus symbol. Place it in the center of the top row (furthest from you).",
   },
   {
     instruction: "Connect cables from the Battery to both sides",
@@ -67,9 +67,9 @@ const SERIES_STEPS: StepDef[] = [
 const PARALLEL_STEPS: StepDef[] = [
   {
     instruction: "Place the Battery at position C5",
-    voice: "Now let's build a parallel circuit! Start by placing the battery at position C5, the center of the bottom row. This is our power source.",
+    voice: "Now let's build a parallel circuit! Start by placing the battery at position C5, the center of the top row. This is our power source.",
     targetCells: { "C5": "battery" },
-    hint: "Same starting point as the series circuit — the battery goes in the center bottom.",
+    hint: "Same starting point as the series circuit — the battery goes in the center of the top row.",
   },
   {
     instruction: "Add corner cables at B5 and D5",
