@@ -50,103 +50,69 @@ export default function ArUcoDetector() {
   };
 
   const connectWebSocket = (ip: string) => {
-    if (!ip.trim()) {
-      showToast("Please enter the Raspberry Pi IP address.");
-      return;
-    }
-
     if (wsRef.current) {
       wsRef.current.close();
     }
-
+    
     setDetections((prev) => ({ ...prev, status: "connecting" }));
+    const websocket = new WebSocket(`ws://${ip}:8765`);
+    wsRef.current = websocket;
 
-    const cleanIp = ip.trim();
-    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const websocketUrl = `${protocol}://${cleanIp}:8765`;
+    websocket.onopen = () => setDetections((prev) => ({ ...prev, status: "connected" }));
+    
+    websocket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "grid_state") {
+        setDetections((prev) => ({
+          ...prev,
+          cells: data.cells,
+          circuit_status: data.circuit_status,
+        }));
+        
+        const comps = Object.values(data.cells).filter(Boolean) as ComponentData[];
+        const isBattery = comps.some((c) => c?.component === "battery");
+        const isLamp = comps.some((c) => c?.component === "lamp");
+        const isSwitch = comps.some((c) => c?.component === "switch");
+        const complete = data.circuit_status?.status === "success";
 
-    try {
-      const websocket = new WebSocket(websocketUrl);
-      wsRef.current = websocket;
+        window.dispatchEvent(
+          new CustomEvent("circuit-update", {
+            detail: { isBattery, isLamp, isSwitch, isComplete: complete, cells: data.cells },
+          })
+        );
+      }
+      
+      if (data.narration && typeof window !== "undefined") {
+        const utterance = new SpeechSynthesisUtterance(data.narration);
+        utterance.lang = 'en-US';
+        utterance.rate = 1.0;
+        window.speechSynthesis.speak(utterance);
+      }
+    };
 
-      websocket.onopen = () => {
-        setDetections((prev) => ({ ...prev, status: "connected" }));
-        showToast("Connected to Raspberry Pi.");
-      };
-
-      websocket.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-
-          if (data.type === "grid_state") {
-            setDetections((prev) => ({
-              ...prev,
-              cells: data.cells,
-              circuit_status: data.circuit_status,
-            }));
-
-            const comps = Object.values(data.cells).filter(Boolean) as ComponentData[];
-            const isBattery = comps.some((c) => c?.component === "battery");
-            const isLamp = comps.some((c) => c?.component === "lamp");
-            const isSwitch = comps.some((c) => c?.component === "switch");
-            const complete = data.circuit_status?.status === "success";
-
-            window.dispatchEvent(
-              new CustomEvent("circuit-update", {
-                detail: {
-                  isBattery,
-                  isLamp,
-                  isSwitch,
-                  isComplete: complete,
-                  cells: data.cells,
-                },
-              })
-            );
-          }
-
-          if (data.narration && typeof window !== "undefined") {
-            const utterance = new SpeechSynthesisUtterance(data.narration);
-            utterance.lang = "en-US";
-            utterance.rate = 1.0;
-            window.speechSynthesis.speak(utterance);
-          }
-        } catch (error) {
-          console.error("Invalid WebSocket message:", error);
-        }
-      };
-
-      websocket.onerror = () => {
-        setDetections((prev) => ({ ...prev, status: "disconnected" }));
-        showToast("Unable to connect to Raspberry Pi.");
-      };
-
-      websocket.onclose = () => {
-        setDetections((prev) => ({ ...prev, status: "disconnected" }));
-      };
-    } catch (error) {
-      console.error("WebSocket connection error:", error);
+    websocket.onclose = () => {
       setDetections((prev) => ({ ...prev, status: "disconnected" }));
-      showToast("Invalid Raspberry Pi address.");
-    }
+    };
   };
 
   useEffect(() => {
-    setIpAddress("");
-
+    // Detect host for initial connection (useful if hosted on Raspi itself)
+    const defaultIp = window.location.hostname;
+    setIpAddress(defaultIp);
+    connectWebSocket(defaultIp);
+    
     return () => {
       wsRef.current?.close();
-      if (toastTimeoutRef.current) {
-        clearTimeout(toastTimeoutRef.current);
-      }
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     };
   }, []);
 
   const handleCalibrate = () => {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify({ type: "command", action: "calibrate" }));
-      showToast("Preparing calibration... Place 4 components at the outer corners of the board.");
+      showToast("Mempersiapkan Kalibrasi... Pastikan 4 komponen berada di 4 sudut terluar papan.");
     } else {
-      showToast("Failed: Raspberry Pi is not connected.");
+      showToast("Gagal: Raspberry Pi belum terhubung.");
     }
   };
 

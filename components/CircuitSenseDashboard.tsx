@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useRef, useEffect, type ReactNode, type CSSProperties } from "react";
 import {
-  Zap, CircuitBoard, LayoutDashboard, Sparkles, Trophy, Award, Flame,
+  ScanEye, Zap, CircuitBoard, LayoutDashboard, Sparkles, Trophy, Award, Flame,
   Battery, Cable, Lightbulb, ToggleRight, Bell, ChevronRight, Play,
   Volume2, Mic, Send, TrendingUp, Target, Star, AlertTriangle, Brain,
   Lock, ArrowUpRight, Search, Hand, GraduationCap, CheckCircle2, User,
@@ -1616,10 +1616,11 @@ interface ShellProps {
 
 function Sidebar({ view, setView, role, onLogout }: ShellProps) {
   const homeLabel = role === "student" ? "My Dashboard" : role === "parent" ? "Child Progress" : "Overview";
-  const nav: { id: string; label: string; icon: LucideIcon }[] = [
+  const nav: { id: string; label: string; icon: LucideIcon; href?: string }[] = [
     { id: "home", label: homeLabel, icon: LayoutDashboard },
     ...(role === "teacher" ? [{ id: "handbook", label: "Handbook", icon: BookOpen }] : []),
     { id: "ai", label: "AI Tutor", icon: Sparkles },
+    { id: "lab", label: "Lentera Lab", icon: ScanEye, href: "/aruco" },
   ];
   return (
     <aside
@@ -1632,6 +1633,15 @@ function Sidebar({ view, setView, role, onLogout }: ShellProps) {
       {nav.map((n) => {
         const active = view === n.id;
         const Icon = n.icon;
+        
+        if (n.href) {
+          return (
+            <Link key={n.id} href={n.href} className="navitem" style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 14, border: "none", background: "transparent", color: C.text, fontWeight: 700, fontSize: 14, textAlign: "left", textDecoration: "none" }}>
+              <Icon size={20} /> {n.label}
+            </Link>
+          );
+        }
+
         return (
           <button key={n.id} onClick={() => setView(n.id)} className="navitem" style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 14, border: "none", background: active ? `linear-gradient(135deg, ${C.primary}, ${C.primaryDeep})` : "transparent", color: active ? "#fff" : C.text, fontWeight: 700, fontSize: 14, textAlign: "left", boxShadow: active ? C.shadowSm : "none" }}>
             <Icon size={20} /> {n.label}
@@ -1656,10 +1666,11 @@ function Sidebar({ view, setView, role, onLogout }: ShellProps) {
 function TopBar({ view, setView, role, name, onLogout }: ShellProps) {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const nav: { id: string; label: string; icon: LucideIcon }[] = [
+  const nav: { id: string; label: string; icon: LucideIcon; href?: string }[] = [
     { id: "home", label: "Home", icon: LayoutDashboard },
     ...(role === "teacher" ? [{ id: "handbook", label: "Handbook", icon: BookOpen }] : []),
     { id: "ai", label: "AI", icon: Sparkles },
+    { id: "lab", label: "Lab", icon: ScanEye, href: "/aruco" },
   ];
   const fallbackName = role === "student" ? "Kai Rahman" : role === "parent" ? "Parent/Guardian" : "Ms. Sari";
   const tag = role === "student" ? "Electrician · Lv 2" : role === "parent" ? "Student’s parent" : "Class 8B · Teacher";
@@ -1675,6 +1686,13 @@ function TopBar({ view, setView, role, name, onLogout }: ShellProps) {
         <div className="lg:hidden flex" style={{ gap: 4, padding: 4, borderRadius: 12, background: "rgba(139,92,246,0.08)" }}>
           {nav.map((n) => {
             const Icon = n.icon;
+            if (n.href) {
+              return (
+                <Link key={n.id} href={n.href} style={{ padding: "7px 12px", borderRadius: 9, border: "none", background: "transparent", color: C.textSoft, fontWeight: 700, fontSize: 12.5, display: "flex", alignItems: "center", gap: 5, textDecoration: "none" }}>
+                  <Icon size={15} /> {n.label}
+                </Link>
+              );
+            }
             return (
               <button key={n.id} onClick={() => setView(n.id)} style={{ padding: "7px 12px", borderRadius: 9, border: "none", background: view === n.id ? "#fff" : "transparent", color: view === n.id ? C.primaryDeep : C.textSoft, fontWeight: 700, fontSize: 12.5, display: "flex", alignItems: "center", gap: 5, boxShadow: view === n.id ? C.shadowSm : "none" }}>
                 <Icon size={15} /> {n.label}
