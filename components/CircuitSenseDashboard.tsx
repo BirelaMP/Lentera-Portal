@@ -1573,7 +1573,7 @@ function LoginPage({ onLogin }: { onLogin: (role: "student" | "teacher" | "paren
                 <button type="submit" disabled={submitting} style={{ flex: 1, background: `linear-gradient(135deg, ${C.primary}, ${C.primaryDeep})`, color: "#fff", border: "none", padding: "12px 18px", borderRadius: 13, fontWeight: 800, fontSize: 13.5, boxShadow: C.shadowSm, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, opacity: submitting ? .65 : 1 }}>
                   {submitting ? "Signing in…" : roleCopy.cta} <ChevronRight size={16} />
                 </button>
-                <button type="button" onClick={() => onLogin(role, roleCopy.placeholder, "demo")} disabled={submitting} style={{ background: C.pinkSoft, color: "#DB2777", border: "none", padding: "12px 18px", borderRadius: 13, fontWeight: 800, fontSize: 13.5, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                <button type="button" onClick={() => onLogin(role, roleCopy.placeholder, "lentera123")} disabled={submitting} style={{ background: C.pinkSoft, color: "#DB2777", border: "none", padding: "12px 18px", borderRadius: 13, fontWeight: 800, fontSize: 13.5, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
                   <Sparkles size={16} /> Demo
                 </button>
               </div>
