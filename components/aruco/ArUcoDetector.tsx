@@ -107,10 +107,16 @@ export default function ArUcoDetector() {
   };
 
   useEffect(() => {
-    // Detect host for initial connection (useful if hosted on Raspi itself)
     const defaultIp = window.location.hostname;
     setIpAddress(defaultIp);
-    connectWebSocket(defaultIp);
+    
+    // Jangan auto-connect jika di-hosting di public domain (seperti netlify)
+    // Auto-connect hanya jika berjalan di localhost atau IP lokal.
+    if (defaultIp === "localhost" || defaultIp === "127.0.0.1" || defaultIp.startsWith("192.168.")) {
+      connectWebSocket(defaultIp);
+    } else {
+      setDetections((prev) => ({ ...prev, status: "disconnected" }));
+    }
     
     return () => {
       wsRef.current?.close();
