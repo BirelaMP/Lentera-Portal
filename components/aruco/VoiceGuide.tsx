@@ -57,10 +57,10 @@ const SERIES_STEPS: StepDef[] = [
     hint: "These corners connect the left and right vertical paths across the top.",
   },
   {
-    instruction: "Place 2 Lamps at B1 and D1, and a cable at C1",
-    voice: "Final step! Place two lamp components at positions B1 and D1, and connect them with a straight cable at C1. In a series circuit, all components share the same single path. If one lamp burns out, the entire circuit breaks! Congratulations, you have successfully built a series circuit!",
-    targetCells: { "B1": "lamp", "D1": "lamp", "C1": "straight_cable" },
-    hint: "In series, lamps share the same current path — they are dimmer but simpler.",
+    instruction: "Place 2 Lamps at B1 and D1, and a Switch at C1",
+    voice: "Final step! Place two lamp components at positions B1 and D1, and place a second switch right between them at C1. In a series circuit, all components share the same single path. If one lamp burns out, or if you open either switch, the entire circuit breaks! Congratulations, you have successfully built a series circuit with two switches!",
+    targetCells: { "B1": "lamp", "D1": "lamp", "C1": "switch" },
+    hint: "The second switch at C1 controls both lamps because they are in series.",
   },
 ];
 

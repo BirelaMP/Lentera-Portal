@@ -29,7 +29,7 @@ export default function CircuitDiagram({ variant }: { variant?: string }) {
         "A3": { component: "straight_cable", rotation: 90 },
         "A4": { component: "straight_cable", rotation: 90 },
         "E2": { component: "straight_cable", rotation: 90 },
-        "E3": { component: "straight_cable", rotation: 90 },
+        "E3": { component: "switch", rotation: 90 },
         "E4": { component: "straight_cable", rotation: 90 },
         "B1": { component: "lamp", rotation: 0 },
         "C1": { component: "switch", rotation: 0 },
