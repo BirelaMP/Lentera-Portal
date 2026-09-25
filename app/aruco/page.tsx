@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, ScanEye, MonitorSmartphone, Cpu, Wifi, BookOpen } from "lucide-react";
 import CircuitDiagram from "@/components/aruco/CircuitDiagram";
 import ArUcoDetector from "@/components/aruco/ArUcoDetector";
+import VoiceGuide from "@/components/aruco/VoiceGuide";
 
 const wiringPoints = [
   {
@@ -91,7 +92,8 @@ export default function ArucoPage() {
             {/* ArUcoDetector (yang sudah support Grid 5x5 + Input IP) */}
             <ArUcoDetector />
             
-            <div className="hidden"></div>
+            {/* Voice Guide — Panduan suara langkah demi langkah */}
+            <VoiceGuide />
           </div>
 
           {/* Right: Circuit Diagram & Tech Stack */}
