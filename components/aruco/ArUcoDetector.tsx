@@ -57,7 +57,10 @@ export default function ArUcoDetector() {
     setDetections((prev) => ({ ...prev, status: "connecting" }));
     
     try {
-      const websocket = new WebSocket(`ws://${ip}:8765`);
+      // Jika pengguna memasukkan URL lengkap (misal dari Ngrok/Pinggy)
+      const wsUrl = ip.startsWith("ws://") || ip.startsWith("wss://") ? ip : `ws://${ip}:8765`;
+      
+      const websocket = new WebSocket(wsUrl);
       wsRef.current = websocket;
 
 
