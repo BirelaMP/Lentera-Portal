@@ -72,41 +72,29 @@ const PARALLEL_STEPS: StepDef[] = [
     hint: "Same starting point as the series circuit — the battery goes in the center of the top row.",
   },
   {
-    instruction: "Add corner cables at B5 and D5",
-    voice: "Place L-shaped corner cables at positions B5 and D5 to start branching the circuit upward from the battery on both sides.",
-    targetCells: { "B5": "l_cable", "D5": "l_cable" },
-    hint: "These corners redirect current flow upward from the battery.",
+    instruction: "Build the top section",
+    voice: "Add straight cables next to the battery at B5 and D5, then put L-shaped corner cables at A5 and E5 to turn downwards.",
+    targetCells: { "B5": "straight_cable", "D5": "straight_cable", "A5": "l_cable", "E5": "l_cable" },
+    hint: "Connect cables outwards from the battery to the outer corners A5 and E5.",
   },
   {
-    instruction: "Run vertical cables on the left: B4 and B2",
-    voice: "Now extend the left branch upward. Place vertical straight cables at positions B4 and B2. We will leave B3 open for a special T-junction cable.",
-    targetCells: { "B4": "straight_cable", "B2": "straight_cable" },
-    hint: "Leave B3 empty — a T-cable will go there to split the path.",
+    instruction: "Build the middle branch",
+    voice: "Now let's make the first parallel branch! Place a T-cable at A3 and E3 to split the current. Then, put a switch at B3, a lamp at C3, and a straight cable at D3.",
+    targetCells: { "A3": "t_cable", "E3": "t_cable", "B3": "switch", "C3": "lamp", "D3": "straight_cable" },
+    hint: "The middle branch needs T-cables on the edges, a switch at B3, and a lamp in the center (C3).",
   },
   {
-    instruction: "Place T-junction cable at B3 and D3",
-    voice: "Here's the key part of a parallel circuit! Place T-junction cables at positions B3 and D3. These T-cables split the current into two separate paths. This is what makes it a parallel circuit — the current has multiple routes to flow through!",
-    targetCells: { "B3": "t_cable", "D3": "t_cable" },
-    hint: "T-cables split current into multiple paths — the heart of parallel circuits.",
+    instruction: "Build the bottom branch",
+    voice: "Finally, let's build the second parallel branch at the bottom. Place corner L-cables at A1 and E1. Then, add a switch at B1, a lamp at C1, and a straight cable at D1.",
+    targetCells: { "A1": "l_cable", "E1": "l_cable", "B1": "switch", "C1": "lamp", "D1": "straight_cable" },
+    hint: "The bottom branch needs L-cables at the corners, a switch at B1, and a lamp in the center (C1).",
   },
   {
-    instruction: "Run vertical cables on the right: D2, and place Switch at D4",
-    voice: "On the right branch, place a vertical cable at D2, and put the switch at D4. The switch will control the entire circuit flow on this side.",
-    targetCells: { "D2": "straight_cable", "D4": "switch" },
-    hint: "The switch at D4 controls the circuit. D2 connects D1 to D3.",
-  },
-  {
-    instruction: "Add corner cables at the top: B1 and D1",
-    voice: "Place L-shaped corner cables at positions B1 and D1 to close the loop at the top of the circuit.",
-    targetCells: { "B1": "l_cable", "D1": "l_cable" },
-    hint: "These corners complete the top of the parallel loop.",
-  },
-  {
-    instruction: "Place 2 Lamps at C1 and C3",
-    voice: "Final step! Place two lamp components at positions C1 and C3. Notice how each lamp sits on its own separate branch between the T-junctions. In a parallel circuit, each lamp gets the full voltage from the battery, so they shine equally bright. If one lamp burns out, the other one stays on! Congratulations, you have successfully built a parallel circuit!",
-    targetCells: { "C1": "lamp", "C3": "lamp" },
-    hint: "Each lamp is on its own branch — they shine equally bright and are independent!",
-  },
+    instruction: "Connect the branches",
+    voice: "To complete the circuit, we need to connect the top, middle, and bottom sections. Place straight cables along the sides at A4, E4, A2, and E2. Congratulations, you have built a parallel circuit with independent switches for each lamp!",
+    targetCells: { "A4": "straight_cable", "E4": "straight_cable", "A2": "straight_cable", "E2": "straight_cable" },
+    hint: "Use straight cables to connect the T-cables to the corners on the left and right sides.",
+  }
 ];
 
 /* ---------------------------------------------------------------- Component */
